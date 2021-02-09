@@ -281,3 +281,44 @@ public class BinarySearch {
     }//end main
 }
 
+/*Benford's law. The American astronomer Simon Newcomb observed a quirk in a
+book that compiled logarithm tables: the beginning pages were much grubbier than
+the ending pages. He suspected taht scientists performed more computations with
+numbers starting with 1 than with 8 or 9, and postulated the first difit law, which
+says that under general circumstances, the leading digit is much more likley to be 1 (roughly 30%)
+than the digit 9 (less than 4%). This phenomenon is known as Benford's law and is now often used s a statistical test.
+For example, IRS forensic accountants rely on it to discover tax fraud. Write a program that reads
+in a sequence of integers from standard input and tabulates the number of times each of the digits
+1-9 is the leading digit, breaking the computation into a set of appropriate static methods. Use your
+program to test the law on some tables of information from you computer or from the web. Then, write aprogram to foil
+the IRS by generating random amounts from $1.00 to $1000.00 with the same distribution that you observed.*/
+
+public class BenfordsLaw {
+
+    public static void main(String[] args) {
+        int[] count = new int[10];     // frequency of leading digit i
+        int n = 0;                     // number of items read in
+
+        while (!StdIn.isEmpty()) {
+            int x = StdIn.readInt();       // read in next integer
+            int digit = leadingDigit(x);   // compute leading digit
+            count[digit]++;                // update frequency
+            n++;
+        }
+
+        // print out frequency distribution
+        for (int i = 1; i < 10; i++)
+            StdOut.printf("%d: %6.1f%%\n", i, 100.0 * count[i] / n);
+    }
+
+
+
+    // return the leading digit of x, assuming x is positive
+    public static int leadingDigit(int x) {
+        while (x >= 10) {
+            x = x / 10;
+        }
+        return x;
+    }
+
+}
