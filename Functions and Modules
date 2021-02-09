@@ -1,0 +1,283 @@
+/*write a static method max3() that takes three int values as arguments and returns the value of
+the largest one. Add an overloaded function that does the same thing with three double values.
+ */
+
+public class StaticMethodExercise {
+
+    public static int max3(int n1, int n2, int n3) {
+        int max = n1;
+        if (n2 > max) {
+            max = n2;
+        }
+        if (n3 > max) {
+            max = n3;
+        }
+        return max;
+    }
+    public static double max3(double n1, double n2, double n3) {
+        double max = n1;
+        if (n2 > max) {
+            max = n2;
+        }
+        if (n3 > max) {
+            max = n3;
+        }
+        return max;
+    }
+    public static void main(String[] args){
+        System.out.println(max3(2, 5, 1));
+        System.out.println(max3(1.7, 9.1, 11.2));
+        }
+    }
+    
+    /*Write a static method odd() that takes three boolean inputs and returns
+true if an odd number of inputs are true, and false otherwise.*/
+*/
+
+/*public class BooleanOddExercise {
+
+    public static boolean odd(boolean one, boolean two, boolean three)
+    {
+        int counter = 0;
+
+        if(one)
+        {
+
+            counter++;
+
+        }
+
+        if(two)
+        {
+            counter++;
+
+        }
+
+        if(three)
+        {
+            counter++
+        }
+        if(counter == 1 || counter == 3)
+        {
+
+            return true;
+        }
+        return false;
+    }
+
+}*/
+
+public class BooleanOddExercise {
+    public static boolean majority(boolean a, boolean b, boolean c) {
+        return (a && b) || (a && c) || (b && c);
+    }
+
+    public static boolean majority(boolean a, boolean b, boolean c) {
+        while (a && b) return true;
+        while (a && c) return true;
+        while (b && c) return true;
+        return false;
+    }
+}
+
+/*The following checksum formula is widely used by banks and credit card
+companies to validate legal account numbers:
+d0 + f(d1) + d2 + f(d3) + d4 + f(d5) + . . . = 0 (mod 10)
+The di are the decimal digits of the account number and f(d) is the sum of the
+decimal digits of 2d (for example, f(7) = 5 because 2 x 7 = 14 and 1 + 4 = 5). For
+example 17327 is valid because 1+5+3+4+7=20, which is a multiple of 10.
+Implement the function f and write a program to take a 10-digit integer as a commandline
+argument and print a valid 11-digit number with the given integer as its first
+10 digits and teh checksum as the last digit.
+ */
+
+/*class CheckSum{
+    public static void main(String []arg){
+        if(arg.length != 1){
+            System.out.println("Please enter one command line argument.");
+        }else{
+            if(arg[0].length() != 10){
+                System.out.println("Please enter 10 digits Integer value.");
+            }else{
+                int ans = 0;
+                for(int i=0;i<10;i++){
+                    if(i%2 == 0){
+                        ans += (arg[0].charAt(i)-48);
+                    }else{
+                        ans += f(arg[0].charAt(i)-48);
+                    }
+                }
+                int checksumValue = ans % 10;
+                System.out.println(arg[0] + checksumValue);
+            }
+        }
+    }
+
+    public static int f(int val){
+        val *= 2;
+        if(val > 9){
+            val = val/10 + val%10;
+        }
+        return val;
+    }
+}*/
+
+public class CheckSum
+{
+    public static void main(String args[])
+    {
+        String n=args[0];
+        if(n.length()!=10)
+        {
+            System.out.println("Wrong number of digits entered");
+            System.exit(1);
+        }
+        int i,s=0;
+        for(i=n.length()-1;i>=0;i--)
+        {
+            if(i%2!=0)
+            {
+                s=s+f((2*Integer.parseInt(n.charAt(i)+""))+"");
+            }
+            if(i%2==0)s=s+Integer.parseInt(n.charAt(i)+"");
+        }
+        int c=0;
+        while(true)
+        {
+            if(s%10!=0)
+            {
+                c++;
+                s=s+c;
+            }
+            else break;
+        }
+        String fv=""+n+c;
+        System.out.println("The final number is: "+fv);
+    }
+    public static int f(String a)
+    {
+        if(a.length()==1)return Integer.parseInt(a);
+        if(a.length()==2)return (Integer.parseInt(a.charAt(0)+"")
+                +Integer.parseInt(a.charAt(1)+""));
+        return 0;
+    }
+}
+
+/*Write a method that takes an array of double values as argument and rescales
+the array so that each element is between 0 and 1 (by subtracting the minimum value
+from each element and then dividing each element by the difference between
+the minimum and maximum values). Use the max() method defined in
+the table in the text, and write and use a matching min() method
+ */
+
+public static double scale(double[] a){
+    int i; //declare a variable i
+
+        //declare and initialize a double array d[].
+
+        double d[] = new double[a.length];
+
+        //iterate on array.
+
+        for(i = 0; a.length-1; i++)
+
+            //Divide each value by min and then divide by difference of max and min of value
+
+            d[i] = (a[i]-min(a))/(max(a)-min(a));
+        return d[i];
+        //return double value.
+        }
+
+        //Implement a java class to test scale method
+
+public class ArrayDoubleFunction {
+
+    //declare and implement static method max().
+    public static double max(double[] a) {
+        //declare a variable max and initialize.
+        double max = Double.NEGATIVE_INFINITY;
+        //A for loop to iterate on double array.
+        for (int i = 0; i < a.length; i++) {
+            //compare max with all the values of array.
+            if (a[i] > max)
+                max = a[i];
+        }
+        return max;
+        //return the max value.
+    }
+    //declare and implement static method min().
+    public static double min(double[] a) {
+        //declare a variable min and initialize
+        double min = Double.NEGATIVE_INFINITY;
+        //use a for loop to iterate on double array.
+        for (int i = 0; i < a.length; i++) {
+            //compare min with all the values of array.
+            if (a[i] < min)
+                main = a[i];
+        }
+        return min;
+        //return the min value
+    }
+    //declare and implement scale method which takes a double array as argument and returns a double value.
+    public static double scale(double[] a) {
+        int i; //declare a variable i.
+        //declare and initialize a double array d[].
+        double d[] = new double[a.length];
+        //iterate on array.
+        for (i = 0; i < a.length - 1; i++)
+            //divide each value by min and then divide by difference of max and min value.
+            d[i] = (a[i] - min(a)) / (max(a) - min(a));
+        return d[i];
+        //return double value
+    }
+    //start main function
+    public static void main(String args[]){
+        //declare a double array arr which accepts value at command-prompt.
+        double arr[] = new double[ar.length];
+        for(int i = 0; i < ar.length-1; i++)
+            arr[i] = Double.parseDouble(args[i]);
+        //pass the double array to scale function and print.
+        System.out.println(scale(arr));
+        }//end main
+    }
+    
+    /*Binary search. A general method that we study in detail in SECTION 4.2 is
+effective for computing the inverse of a cumulative probability density function like
+Phi(). Such functions are continuous and non-decreasing from (0,0) to (1,1). To find the value
+x0, for which f(x0) = y0, check the value of f(0.5). If it is greater than y0, then x0 must be between 0 and 0.5;
+otherwise, it must be between 0.5 and 1. Either way, we halve the length of the interval known to contain x0.
+Iterating, we can compute x0 to within given tolerance. Add a method PhiInverse() to Gaussian that uses
+binary search to compute the inverse. Change main() to take a number p between student would need to be in the top p
+percent of students taking the SAT in a year when the mean and standard deviation were the first two command-line
+arguments
+ */
+
+public class BinarySearch {
+
+    /*create a static method sum which takes
+    an int argument n and returns the sum as result.*/
+    public static double sum(int n) {
+        int t;
+        int sum = 0;
+        //take a for loop to iterate over t and n.
+        //t is in between -10 and 10.
+        for (t = -10; t <= 10; t++) {
+            for (int i = 1; i < n; i++) {
+
+                //store the value of sum.
+                sum += (Math.cos(i * t));
+            }
+        }
+        double result = sum / n;
+        return result; //return result
+    }
+
+    //start the main function.
+    public static void main(String args[]) {
+        //accept the value of n from user
+        int n = Integer.parseInt(args[0]);
+        //call the function sum pass n and print.
+        System.out.println(sum(n));
+    }//end main
+}
+
