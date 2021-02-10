@@ -322,3 +322,478 @@ public class BenfordsLaw {
     }
 
 }
+
+/*Add to Gaussian the method implementation phi(x, mu,
+sigma) specified in the API that computes the Gaussian distribution with a given
+mean u and standard deviation sigma, based on the formula phi(x,u,s) = phi((x-u)/s)/s.
+Also, include the implementation of the associated cumulative distribution function Phi(z, mu, sigma),
+based on the formula phi(z, mu, s) = phi((z-u)/sigma).
+ */
+
+import java.util.Scanner;
+
+public class GaussianPhiValue {
+
+    public static double pdf(double x) {
+        return Math.exp(-x * x / 2) / Math.sqrt(2 * Math.PI);
+    }
+    public static double cdf(double z) {
+        double sum = 0.0;
+        double term = z;
+
+        //Return the value based on the input value of variable 'z'
+        if (z < -8.0)
+            return 0.0;
+        if (z > 8.0)
+            return 1.0;
+        //Loop to calculate the value of variable 'term'
+        for (int i = 3; sum != sum + term; i += 2) {
+            sum = sum + term;
+            term = term * z * z / i;
+        }
+        //This calls the pdf(x) function defined above
+        return 0.5 + pdf(z) * sum;
+    }
+    //Static function to calculate the Gaussian Probability
+    //Density function with three arguments
+
+    public static double pdf(double x, double mu, double sigma) {
+        return (((x - mu) / sigma) / sigma);
+    }
+    //Static function to calculate the Gaussian Probability
+    //cumulative function with three argument
+
+    public static double cdf(double z, double mu, double sigma) {
+        return ((z - mu) / sigma);
+    }
+    public static void main(String[] args){
+        //initialize the scanner class
+            Scanner sc = new Scanner(System.in);
+
+        //Calling appropriate method based on the number of arguments
+            System.out.println("Calling CDF for one" + "argument");
+
+        //Get the value of the arguments from the user
+            System.out.println("Enter the value of x:");
+            double x = sc.nextDouble();
+
+            System.out.println("Enter the value of mu:");
+            double mu = sc.nextDouble();
+
+            System.out.println("Enter the value of "+"  sigma:");
+            double sigma = sc.nextDouble();
+
+        //Calling cdf(x) function with one argument
+            System.out.println(cdf((x-mu)/sigma));
+            System.out.println("Calling PDF and CDF" + " for three arguments");
+
+        //Calling pdf(x) function with three arguments
+            System.out.println("The PDF is: " + pdf(x, mu, sigma));
+
+        //Calling cdf(x) funciton with three arguments
+        System.out.println("The CDF is:" + cdf(x, mu, sigma));
+
+            //Close the scanner object
+            sc.close();
+        }
+    }
+    
+    /*Add to StdRandom a method shuffle() that takes an array of double values as an argument and rearranges
+them in random order. Implement a test client that checks that each permutation of the array is produced
+about the same number of times. Add overloaded methods that take arrays of integers and strings.
+*/
+
+import java.util.*;
+
+class StdRandomShufflePermutation{
+    static void shuffle(int array[]){
+        Random rand = new Random();
+
+        for (int i = 0; i < array.length; i++) {
+            int randomIndexToSwap = rand.nextInt(array.length); //shuffles the numbers in the array
+            int temp = array[randomIndexToSwap];
+            array[randomIndexToSwap] = array[i];
+            array[i] = temp; //array values stored
+        }
+    }
+
+    static void shuffle(double array[]){ //formatting of the double array
+        Random rand = new Random();
+
+        for (int i = 0; i < array.length; i++) {
+            int randomIndexToSwap = rand.nextInt(array.length);
+            double temp = array[randomIndexToSwap];
+            array[randomIndexToSwap] = array[i];
+            array[i] = temp;
+        }
+    }
+
+    static void shuffle(String array[]){
+        Random rand = new Random();
+
+        for (int i = 0; i < array.length; i++) {
+            int randomIndexToSwap = rand.nextInt(array.length); //next array shuffle, Integer format
+            String temp = array[randomIndexToSwap];
+            array[randomIndexToSwap] = array[i];
+            array[i] = temp;
+        }
+    }
+
+    public static void main(String[] args) {
+        int arr1[] = {1,2,3,4,5};
+        double arr2[] = {1.1,2.2,3.3,4.4,5.5};
+        String arr3[] = {"HI","MY","NAME","IS","LOREM"};
+        System.out.println("Before: ");
+        System.out.println(Arrays.toString(arr1));
+        System.out.println(Arrays.toString(arr2));
+        System.out.println(Arrays.toString(arr3));
+
+        shuffle(arr1);
+        shuffle(arr2);
+        shuffle(arr3);
+
+        System.out.println("\nAfter: ");
+        System.out.println(Arrays.toString(arr1));
+        System.out.println(Arrays.toString(arr2));
+        System.out.println(Arrays.toString(arr3));
+
+    }
+}
+
+/*Write a test client for both StdStats and StdRandom that checks that the
+methods in both libraries operate as expected. Take a command-line argument N,
+generate N random numbers using each of the methods in StdRandom, and print
+out their statistics. Extra credit: Defend the results that you get by comparing them
+to those that are to be expected from analysis.
+*/
+
+public class TestClient {
+
+    public static int uniform(int n) {
+        return (int) (Math.random() * n);
+    }
+    //This method computes random variables which are uniformly distributed in
+    //in a given range and returns floating point numbers between lo and hi
+
+    public static double uniform(double lo, double hi) {
+        return lo + Math.random() * (hi - lo);
+    }
+
+    /*This method computes random bit(Bernoulli) and returns true
+    with probability p and false otherwise
+     */
+    public static boolean bernoulli(double p) {
+        return Math.random() < p;
+    }
+
+    /*This method computes standard Gaussian where mean = 0 and
+    standard deviation = 1
+     */
+    public static double gaussian() {
+        double r, x, y;
+        do {
+            //Calls the uniform() static function define above
+            x = uniform(-1.0, 1.0);
+            y = uniform(-1.0, 1.0);
+            r = x * x + y * y;
+        }
+        while (r >= 1 || r == 0);
+        return x * Math.sqrt(-2 * Math.log(r) / r);
+    }
+}
+StdStats.java
+        public class StdStats {
+            //This method computes largest value in the array
+            public static double max(double[] a) {
+                //variable max is the constant holding the negative infinity of type doble
+                double max = Double.NEGATIVE_INFINITY;
+                for (int i = 0; i < a.length; i++)
+                    if (a[i] > max)
+                        max = a[i];
+                return max;
+            }
+
+            //This method computes the average value of the array elements
+            public static double mean(double[] a) {
+                double sum = 0.0;
+                for (int i = 0; i < a.length; i++)
+                    sum = sum + a[i];
+                return sum / a.length;
+            }
+
+            //This method computes the variance of the array elements
+            public static double var(double[] a) {
+                //This method computes the average value of the array elements
+                double avg = mean(a);
+                double sum = 0.0;
+                for (int i = 0; i < a.length; i++)
+                    sum += (a[i] - avg) * (a[i] - avg);
+                return sum / (a.length - 1);
+            }
+
+            //This method computes the standard deviation oft he array elements
+            public static double stddev(double[] a) {
+                //Returns the correctly rounded positive square root of a double value
+                return Math.sqrt(var(a));
+            }
+        }
+        //This class is the TestClient for both StdRandom and StdStats
+//TestClient.java
+public class TestClient{
+    public static void main(String[] args){
+        //Command line argument
+        int n = Integer.parseInt(args[0]);
+        //Call StdRandom to generate 3 random // variables
+        double random1 = StdRandom.uniform(n);
+        double random2 = StdRandom.uniform(1, n);
+        double random3 = StdRandom.gaussian();
+        //Initialize a double array
+        double[] arr = new double[3];
+        arr[0] = random1;
+        arr[1] = random2;
+        arr[2] = random3;
+        //Call the methods of StdStats class to generate the statistics of random variable
+        System.out.println("The random numbers " + "generate are:" + random1 + "," + random2 + "," + random3);
+        System.out.println("The statistics are:");
+        System.out.println("The maximum is: " + StdStats.max(arr));
+        System.out.println("The mean is:" + StdStats.mean(arr));
+        System.out.println("The variance is:" + StdStats.var(arr));
+        System.out.println("The standard variance is:" + StdStats.stddev(arr));
+    }
+}
+
+/**
+ *  <i>Standard array IO</i>. This class provides methods for reading
+ *  in 1D and 2D arrays from standard input and printing out to 
+ *  standard output.
+ *  <p>
+ *  For additional documentation, see
+ *  <a href="https://introcs.cs.princeton.edu/22libary">Section 2.2</a> of
+ *  <i>Computer Science: An Interdisciplinary Approach</i>
+ *  by Robert Sedgewick and Kevin Wayne.
+ *
+ *  @author Robert Sedgewick
+ *  @author Kevin Wayne
+ */
+public class StdArrayIO {
+
+    // it doesn't make sense to instantiate this class
+    private StdArrayIO() { }
+
+    /**
+     * Reads a 1D array of doubles from standard input and returns it.
+     *
+     * @return the 1D array of doubles
+     */
+    public static double[] readDouble1D() {
+        int n = StdIn.readInt();
+        double[] a = new double[n];
+        for (int i = 0; i < n; i++) {
+            a[i] = StdIn.readDouble();
+        }
+        return a;
+    }
+
+    /**
+     * Prints an array of doubles to standard output.
+     *
+     * @param a the 1D array of doubles
+     */
+    public static void print(double[] a) {
+        int n = a.length;
+        StdOut.println(n);
+        for (int i = 0; i < n; i++) {
+            StdOut.printf("%9.5f ", a[i]);
+        }
+        StdOut.println();
+    }
+
+
+    /**
+     * Reads a 2D array of doubles from standard input and returns it.
+     *
+     * @return the 2D array of doubles
+     */
+    public static double[][] readDouble2D() {
+        int m = StdIn.readInt();
+        int n = StdIn.readInt();
+        double[][] a = new double[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                a[i][j] = StdIn.readDouble();
+            }
+        }
+        return a;
+    }
+
+    /**
+     * Prints the 2D array of doubles to standard output.
+     *
+     * @param a the 2D array of doubles
+     */
+    public static void print(double[][] a) {
+        int m = a.length;
+        int n = a[0].length;
+        StdOut.println(m + " " + n);
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                StdOut.printf("%9.5f ", a[i][j]);
+            }
+            StdOut.println();
+        }
+    }
+
+
+    /**
+     * Reads a 1D array of integers from standard input and returns it.
+     *
+     * @return the 1D array of integers
+     */
+    public static int[] readInt1D() {
+        int n = StdIn.readInt();
+        int[] a = new int[n];
+        for (int i = 0; i < n; i++) {
+            a[i] = StdIn.readInt();
+        }
+        return a;
+    }
+
+    /**
+     * Prints an array of integers to standard output.
+     *
+     * @param a the 1D array of integers
+     */
+    public static void print(int[] a) {
+        int n = a.length;
+        StdOut.println(n);
+        for (int i = 0; i < n; i++) {
+            StdOut.printf("%9d ", a[i]);
+        }
+        StdOut.println();
+    }
+
+
+    /**
+     * Reads a 2D array of integers from standard input and returns it.
+     *
+     * @return the 2D array of integers
+     */
+    public static int[][] readInt2D() {
+        int m = StdIn.readInt();
+        int n = StdIn.readInt();
+        int[][] a = new int[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                a[i][j] = StdIn.readInt();
+            }
+        }
+        return a;
+    }
+
+    /**
+     * Print a 2D array of integers to standard output.
+     *
+     * @param a the 2D array of integers
+     */
+    public static void print(int[][] a) {
+        int m = a.length;
+        int n = a[0].length;
+        StdOut.println(m + " " + n);
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                StdOut.printf("%9d ", a[i][j]);
+            }
+            StdOut.println();
+        }
+    }
+
+
+    /**
+     * Reads a 1D array of booleans from standard input and returns it.
+     *
+     * @return the 1D array of booleans
+     */
+    public static boolean[] readBoolean1D() {
+        int n = StdIn.readInt();
+        boolean[] a = new boolean[n];
+        for (int i = 0; i < n; i++) {
+            a[i] = StdIn.readBoolean();
+        }
+        return a;
+    }
+
+    /**
+     * Prints a 1D array of booleans to standard output.
+     *
+     * @param a the 1D array of booleans
+     */
+    public static void print(boolean[] a) {
+        int n = a.length;
+        StdOut.println(n);
+        for (int i = 0; i < n; i++) {
+            if (a[i]) StdOut.print("1 ");
+            else      StdOut.print("0 ");
+        }
+        StdOut.println();
+    }
+
+    /**
+     * Reads a 2D array of booleans from standard input and returns it.
+     *
+     * @return the 2D array of booleans
+     */
+    public static boolean[][] readBoolean2D() {
+        int m = StdIn.readInt();
+        int n = StdIn.readInt();
+        boolean[][] a = new boolean[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                a[i][j] = StdIn.readBoolean();
+            }
+        }
+        return a;
+    }
+
+    /**
+     * Prints a 2D array of booleans to standard output.
+     *
+     * @param a the 2D array of booleans
+     */
+    public static void print(boolean[][] a) {
+        int m = a.length;
+        int n = a[0].length;
+        StdOut.println(m + " " + n);
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (a[i][j]) StdOut.print("1 ");
+                else         StdOut.print("0 ");
+            }
+            StdOut.println();
+        }
+    }
+
+
+    /**
+     * Unit tests {@code StdArrayIO}.
+     *
+     * @param args the command-line arguments
+     */
+    public static void main(String[] args) {
+
+        // read and print an array of doubles
+        double[] a = StdArrayIO.readDouble1D();
+        StdArrayIO.print(a);
+        StdOut.println();
+
+        // read and print a matrix of doubles
+        double[][] b = StdArrayIO.readDouble2D();
+        StdArrayIO.print(b);
+        StdOut.println();
+
+        // read and print a matrix of doubles
+        boolean[][] d = StdArrayIO.readBoolean2D();
+        StdArrayIO.print(d);
+        StdOut.println();
+    }
+
+}
