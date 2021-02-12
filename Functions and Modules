@@ -915,3 +915,36 @@ class FibonacciSequence {
         }
     }
 }
+
+/*Write a program that takes N from the command line and creates an N-by-N
+matrix with the entry in row i and column j set to true if i and j are relatively
+prime, then shows the matrix on the standard drawing. Then, and the matrix such with the entry in row N and column j
+set to true if the coefficient of x^k in (1+x)^N (binomial coefficient) is odd. You may be surprised at the pattern
+formed by the latter.
+ */
+
+import java.util.Scanner;
+class HadamardMatrixCode
+{
+    public static void main(String args[]){
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter N: ");
+        int n=sc.nextInt();
+        int i,j;
+        int a[][] = new int[n][n];
+        for(i=0;i<n;i++)
+        {
+            for(j=0;j<n;j++){
+                a[i][j]=i+j;
+            }
+        }
+        System.out.println("Matrix content is: ");
+        for(i=0;i<n;i++)
+        {
+            for(j=0;j<n;j++)
+                System.out.print(a[i][j]+" ");
+            System.out.print("\n");
+        }
+    }
+
+}
